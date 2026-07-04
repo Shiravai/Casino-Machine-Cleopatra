@@ -5,50 +5,198 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#0b0603" />
 <title>Cleopatra's Gold — הורדה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600;700&family=Heebo:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
-  :root { color-scheme: dark; }
+  :root {
+    color-scheme: dark;
+    --gold-hi: #fff3b8;
+    --gold: #f5c15a;
+    --gold-deep: #b06a12;
+    --ink: #070301;
+    --teal: #2ce0cf;
+    --text-dim: rgba(255, 238, 200, 0.72);
+    --gold-text: linear-gradient(180deg, #fff9de 0%, #ffe08a 32%, #f0b23f 52%, #c47a14 68%, #ffe89a 84%, #8a4d0d 100%);
+    --gold-face: linear-gradient(180deg, #ffedad 0%, #f4c766 32%, #d69a2e 58%, #a35b0e 100%);
+  }
   * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
   body {
-    margin: 0;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background:
-      radial-gradient(ellipse at 50% 20%, rgba(255, 190, 80, 0.10), transparent 55%),
-      radial-gradient(ellipse at 50% 100%, rgba(44, 224, 207, 0.06), transparent 60%),
-      #0b0603;
-    font-family: "Segoe UI", system-ui, sans-serif;
-    color: #fff3b8;
-    padding: 20px;
+    font-family: "Heebo", "Segoe UI", system-ui, sans-serif;
+    color: var(--gold-hi);
+    background: var(--ink);
+    position: relative;
+    overflow-x: hidden;
+    padding: clamp(20px, 5vw, 56px) 18px;
   }
-  .wrap { max-width: 640px; width: 100%; text-align: center; }
-  .logo-wings { width: min(320px, 70vw); margin: 0 auto -0.5em; display: block; filter: drop-shadow(0 3px 6px rgba(0,0,0,.6)); }
+
+  /* ---------- backdrop ---------- */
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    background:
+      url("assets/egypt-casino-bg.png") center 30% / cover no-repeat;
+    filter: saturate(1.08) brightness(0.62);
+    transform: scale(1.04);
+  }
+  .backdrop::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 8%, rgba(8, 4, 1, 0.15) 0%, rgba(6, 3, 1, 0.86) 68%),
+      linear-gradient(180deg, rgba(5, 2, 1, 0.55) 0%, rgba(5, 2, 1, 0.2) 22%, rgba(5, 2, 1, 0.55) 62%, rgba(3, 1, 1, 0.95) 100%);
+  }
+  .glow-orb {
+    position: fixed;
+    z-index: -2;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+  }
+  .glow-orb.gold {
+    width: 46vw; height: 46vw;
+    top: -14vw; left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(255, 190, 80, 0.24), transparent 70%);
+  }
+  .glow-orb.teal {
+    width: 34vw; height: 34vw;
+    bottom: -10vw; right: -6vw;
+    background: radial-gradient(circle, rgba(44, 224, 207, 0.14), transparent 70%);
+  }
+
+  .sparkle {
+    position: fixed;
+    z-index: -1;
+    border-radius: 50%;
+    background: #ffe9a3;
+    box-shadow: 0 0 8px 2px rgba(255, 224, 140, 0.8);
+    animation: twinkle 3.4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.15; transform: scale(0.7); }
+    50% { opacity: 0.95; transform: scale(1.15); }
+  }
+
+  /* ---------- layout ---------- */
+  .wrap { max-width: 620px; width: 100%; text-align: center; position: relative; z-index: 1; }
+
+  .cleo-portrait {
+    width: clamp(150px, 40vw, 210px);
+    aspect-ratio: 1 / 1;
+    margin: 0 auto clamp(14px, 3vw, 22px);
+    border-radius: 50%;
+    background: url("assets/cleopatra-mobile-hero.png") 50% 17% / 330% auto no-repeat;
+    border: 3px solid transparent;
+    background-origin: border-box;
+    box-shadow:
+      0 0 0 3px rgba(6, 3, 1, 0.9),
+      0 0 0 6px rgba(255, 214, 120, 0.55),
+      0 14px 40px rgba(0, 0, 0, 0.65),
+      0 0 60px rgba(255, 190, 80, 0.28);
+    position: relative;
+  }
+  .cleo-portrait::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px dashed rgba(255, 224, 150, 0.4);
+    animation: ringTurn 26s linear infinite;
+  }
+  @keyframes ringTurn { to { transform: rotate(360deg); } }
+
+  .logo-wings { width: min(280px, 62vw); margin: 0 auto -0.6em; display: block; filter: drop-shadow(0 4px 10px rgba(0,0,0,.7)); }
+
   h1 {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "Cinzel Decorative", "Cinzel", Georgia, serif;
     font-weight: 900;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    font-size: clamp(30px, 7vw, 48px);
-    margin: 0 0 6px;
-    background: linear-gradient(180deg, #fff7cf 0%, #ffd96a 38%, #c47a14 62%, #ffe89a 82%, #7a3d08 100%);
+    letter-spacing: 0;
+    line-height: 1.2;
+    font-size: 30px;
+    margin: 0 auto 10px;
+    padding: 0 4px;
+    max-width: 100%;
+    text-align: center;
+    direction: ltr;
+    background: var(--gold-text);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    -webkit-text-stroke: 1px rgba(80, 34, 2, 0.85);
+    -webkit-text-stroke: 1px rgba(70, 30, 2, 0.7);
+    filter: drop-shadow(0 3px 0 rgba(70, 30, 2, 0.5)) drop-shadow(0 8px 22px rgba(0,0,0,.6));
   }
-  .tag { color: rgba(255,236,180,.68); font-size: 14px; margin-bottom: 34px; letter-spacing: .04em; }
+  h1 .line2 { display: block; }
+  @media (min-width: 400px) {
+    h1 { font-size: 36px; }
+  }
+  @media (min-width: 460px) {
+    h1 { font-size: 42px; }
+  }
+  @media (min-width: 700px) {
+    h1 { font-size: 58px; }
+  }
+  .tag {
+    font-family: "Cinzel", serif;
+    color: var(--text-dim);
+    font-size: clamp(12px, 2vw, 15px);
+    margin-bottom: clamp(28px, 6vw, 46px);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .tag::before, .tag::after {
+    content: "◆";
+    color: var(--teal);
+    font-size: 8px;
+    margin: 0 10px;
+    vertical-align: middle;
+    opacity: 0.8;
+  }
 
+  /* ---------- cards ---------- */
   .card {
-    background: linear-gradient(180deg, rgba(36,17,4,.75), rgba(18,8,2,.85));
-    border: 1px solid rgba(255,208,106,.5);
-    border-radius: 20px;
-    padding: 26px 22px;
-    margin-bottom: 18px;
-    box-shadow: 0 12px 30px rgba(0,0,0,.5);
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(255, 200, 90, 0.10), transparent 60%),
+      linear-gradient(180deg, rgba(40, 19, 5, 0.82), rgba(14, 7, 2, 0.92));
+    border: 1px solid rgba(255, 212, 120, 0.4);
+    border-radius: 22px;
+    padding: clamp(22px, 5vw, 32px) clamp(20px, 5vw, 30px);
+    margin-bottom: 20px;
+    box-shadow:
+      0 18px 40px rgba(0, 0, 0, 0.55),
+      inset 0 1px 0 rgba(255, 235, 180, 0.12);
+    position: relative;
+    overflow: hidden;
   }
-  .card h2 { font-family: Georgia, serif; font-size: 17px; color: #ffd96a; margin: 0 0 6px; letter-spacing: .04em; }
-  .card p { font-size: 13px; color: rgba(255,236,180,.7); margin: 0 0 18px; line-height: 1.6; }
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(255,230,160,.5), transparent 30%, transparent 70%, rgba(255,230,160,.25));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .card h2 {
+    font-family: "Cinzel", serif;
+    font-weight: 700;
+    font-size: clamp(17px, 3vw, 20px);
+    color: var(--gold-hi);
+    margin: 0 0 8px;
+    letter-spacing: 0.03em;
+  }
+  .card p { font-size: 13.5px; color: var(--text-dim); margin: 0 0 20px; line-height: 1.65; }
 
   .btn {
     display: inline-flex;
@@ -56,36 +204,81 @@
     justify-content: center;
     gap: 10px;
     width: 100%;
-    max-width: 360px;
-    padding: 14px 20px;
+    max-width: 380px;
+    padding: 15px 22px;
     border-radius: 999px;
-    font-family: Georgia, serif;
+    font-family: "Cinzel", serif;
     font-weight: 700;
-    font-size: 16px;
-    letter-spacing: .06em;
+    font-size: clamp(14px, 3vw, 16px);
+    letter-spacing: 0.05em;
     text-decoration: none;
-    color: #431f02;
-    background: linear-gradient(180deg, #ffe9a3 0%, #f2b23a 45%, #a35b0e 100%);
+    color: #3a1c02;
+    background: var(--gold-face);
     border: 2px solid #ffedad;
-    box-shadow: 0 0 0 3px rgba(90,44,5,.85), 0 6px 16px rgba(0,0,0,.5);
-    transition: transform .15s ease;
+    box-shadow:
+      0 0 0 3px rgba(74, 36, 4, 0.85),
+      0 8px 20px rgba(0, 0, 0, 0.55),
+      0 0 30px rgba(255, 195, 90, 0.35);
+    transition: transform .15s ease, box-shadow .2s ease;
   }
+  .btn:hover { box-shadow: 0 0 0 3px rgba(74,36,4,.85), 0 8px 20px rgba(0,0,0,.55), 0 0 46px rgba(255,205,110,.55); }
   .btn:active { transform: scale(.96); }
   .btn.secondary {
-    color: #fff3b8;
-    background: linear-gradient(180deg, rgba(24,12,4,.9), rgba(10,5,2,.9));
-    border-color: rgba(255,208,106,.55);
+    color: var(--gold-hi);
+    background: linear-gradient(180deg, rgba(28,15,5,.92), rgba(10,5,2,.92));
+    border-color: rgba(255, 208, 106, 0.55);
+    box-shadow: 0 0 0 3px rgba(74,36,4,.5), 0 8px 20px rgba(0,0,0,.5);
   }
 
-  ol { text-align: right; font-size: 13px; line-height: 1.9; margin: 16px auto 0; max-width: 380px; padding-inline-start: 20px; color: rgba(255,236,180,.85); }
-  li b { color: #ffd96a; }
+  ol {
+    text-align: right;
+    font-size: 13px;
+    line-height: 1.95;
+    margin: 18px auto 0;
+    max-width: 400px;
+    padding-inline-start: 22px;
+    color: rgba(255, 238, 200, 0.85);
+  }
+  li b { color: var(--gold); }
+  li::marker { color: var(--teal); }
 
-  .note { margin-top: 28px; font-size: 11px; color: rgba(255,236,180,.45); line-height: 1.7; }
-  .badge { display:inline-block; font-size:10px; letter-spacing:.14em; padding:3px 10px; border-radius:999px; background:rgba(44,224,207,.12); border:1px solid rgba(44,224,207,.4); color:#7dfff0; margin-bottom:10px; }
+  .note {
+    margin-top: 30px;
+    font-size: 11px;
+    color: rgba(255, 238, 200, 0.4);
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "Cinzel", serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    padding: 5px 14px;
+    border-radius: 999px;
+    background: rgba(44, 224, 207, 0.10);
+    border: 1px solid rgba(44, 224, 207, 0.45);
+    color: #7dfff0;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .badge.royal {
+    background: rgba(255, 195, 90, 0.10);
+    border-color: rgba(255, 212, 120, 0.55);
+    color: var(--gold-hi);
+  }
 </style>
 </head>
 <body>
+  <div class="backdrop" aria-hidden="true"></div>
+  <div class="glow-orb gold" aria-hidden="true"></div>
+  <div class="glow-orb teal" aria-hidden="true"></div>
+
   <div class="wrap">
+    <div class="cleo-portrait" role="img" aria-label="Cleopatra"></div>
+
     <svg class="logo-wings" viewBox="0 0 300 60" aria-hidden="true">
       <defs>
         <linearGradient id="wg" x1="0" y1="0" x2="0" y2="1">
@@ -99,11 +292,11 @@
       <circle cx="150" cy="30" r="13" fill="#a41f3f" stroke="url(#wg)" stroke-width="4"/>
       <circle cx="146" cy="26" r="4" fill="#ff8ba7" opacity=".8"/>
     </svg>
-    <h1>Cleopatra's Gold</h1>
-    <div class="tag">משחק קזינו מצרי — קרדיטים לדוגמה בלבד</div>
+    <h1>Cleopatra's<span class="line2">Gold</span></h1>
+    <div class="tag">משחק קזינו מצרי · קרדיטים לדוגמה בלבד</div>
 
     <div class="card">
-      <span class="badge">מומלץ · אנדרואיד</span>
+      <span class="badge royal">מומלץ · אנדרואיד</span>
       <h2>התקנה כאפליקציה</h2>
       <p>הורדה והתקנה ישירה על הטלפון. עובד גם בלי אינטרנט אחרי ההתקנה.</p>
       <a class="btn" id="apkLink" href="CleopatrasGold.apk" download>⬇ הורידו את ה-APK</a>
@@ -111,7 +304,7 @@
         <li>לחצו על הכפתור למעלה — הקובץ יורד</li>
         <li>פתחו את הקובץ שהורד ← <b>התקן</b></li>
         <li>אם מוצג אזהרה על "מקור לא מוכר" — אשרו התקנה (זה תקין, האפליקציה לא מגיעה מחנות אבל בטוחה לחלוטין)</li>
-        <li>פתחו מהאייקון החדש במסך הבית 👑</li>
+        <li>פתחו מהאייקון החדש במסך הבית</li>
       </ol>
     </div>
 
@@ -129,5 +322,23 @@
 
     <div class="note">גרסת בדיקות (Demo) · קרדיטים וירטואליים בלבד · אין רכישות אמיתיות</div>
   </div>
+
+  <script>
+    const sparkleCount = 22;
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < sparkleCount; i += 1) {
+      const s = document.createElement("div");
+      s.className = "sparkle";
+      const size = 1.5 + Math.random() * 2.2;
+      s.style.width = `${size}px`;
+      s.style.height = `${size}px`;
+      s.style.left = `${Math.random() * 100}vw`;
+      s.style.top = `${Math.random() * 100}vh`;
+      s.style.animationDelay = `${Math.random() * 3.4}s`;
+      s.style.animationDuration = `${2.6 + Math.random() * 2.4}s`;
+      frag.appendChild(s);
+    }
+    document.body.appendChild(frag);
+  </script>
 </body>
 </html>
