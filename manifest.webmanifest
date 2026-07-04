@@ -1,0 +1,17 @@
+{
+  "name": "Cleopatra's Gold — Casino Slots",
+  "short_name": "Cleopatra's Gold",
+  "description": "Premium Egyptian slot machine. Demo credits only.",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#0b0603",
+  "theme_color": "#0b0603",
+  "icons": [
+    {
+      "src": "assets/temple-reel-chamber.png",
+      "sizes": "864x1728",
+      "type": "image/png"
+    }
+  ]
+}

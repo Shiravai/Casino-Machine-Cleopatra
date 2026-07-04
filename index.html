@@ -2,250 +2,179 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#08040b" />
-    <title>Cleopatra Royale</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0603" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <title>Cleopatra's Gold — Casino Slots</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <!-- Coin / spark particle layer -->
     <canvas id="fxCanvas" aria-hidden="true"></canvas>
-    <div class="ambient-layer" aria-hidden="true">
-      <span class="sand sand-a"></span>
-      <span class="sand sand-b"></span>
-      <span class="beam beam-a"></span>
-      <span class="beam beam-b"></span>
+
+    <!-- ============ SPLASH ============ -->
+    <div id="splash" class="splash">
+      <div class="splash-bg" aria-hidden="true"></div>
+      <div class="splash-cleo" aria-hidden="true"></div>
+      <div class="splash-center">
+        <div class="game-logo splash-logo">
+          <svg class="logo-wings" viewBox="0 0 300 60" aria-hidden="true">
+            <defs>
+              <linearGradient id="wingGold" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#fff3b8"/><stop offset=".45" stop-color="#f5b83d"/><stop offset="1" stop-color="#8f4d0d"/>
+              </linearGradient>
+            </defs>
+            <g fill="url(#wingGold)">
+              <path d="M150 34 C120 6 66 2 8 26 C60 24 96 32 128 46 Z"/>
+              <path d="M150 34 C180 6 234 2 292 26 C240 24 204 32 172 46 Z"/>
+            </g>
+            <circle cx="150" cy="30" r="13" fill="#a41f3f" stroke="url(#wingGold)" stroke-width="4"/>
+            <circle cx="146" cy="26" r="4" fill="#ff8ba7" opacity=".8"/>
+          </svg>
+          <h1><span>Cleopatra's</span><strong>GOLD</strong></h1>
+        </div>
+        <div class="splash-progress" aria-hidden="true"><i id="splashBar"></i></div>
+        <button id="enterButton" class="enter-button" type="button">TAP TO PLAY</button>
+        <p class="splash-note">Demo credits only · No real money</p>
+      </div>
     </div>
 
-    <main class="phone-app" aria-label="Cleopatra Royale casino app">
-      <section class="screen is-active" id="screen-lobby" data-screen="lobby">
-        <header class="app-bar">
-          <button class="avatar-button" type="button" data-nav="profile" aria-label="Open profile">
-            <span class="avatar-crown">CR</span>
-            <span class="vip-chip">VIP 15</span>
-          </button>
-          <div class="resource-strip">
-            <div class="resource-pill">
-              <span class="coin-dot"></span>
-              <strong id="lobbyBalance">2,500</strong>
-            </div>
-            <button class="add-button" type="button" aria-label="Add demo coins">+</button>
-          </div>
-        </header>
+    <!-- ============ ROTATE PROMPT ============ -->
+    <div id="rotateOverlay" class="rotate-overlay" aria-hidden="true">
+      <div class="rotate-card">
+        <div class="rotate-phone"><i></i></div>
+        <strong>ROTATE YOUR DEVICE</strong>
+        <span>סובבו את הטלפון לרוחב</span>
+      </div>
+    </div>
 
-        <section class="hero-card">
-          <div class="hero-art" role="img" aria-label="Cleopatra in a golden Egyptian casino temple"></div>
-          <div class="hero-sheen" aria-hidden="true"></div>
-          <div class="jackpot-banner">
-            <span>Grand Jackpot</span>
-            <strong id="lobbyJackpot">12,840</strong>
-          </div>
-          <div class="hero-copy">
-            <span class="season-badge">Temple of Fortune</span>
-            <h1>Cleopatra Royale</h1>
-            <p>Ancient magic. Golden reels. Demo credits only.</p>
-            <button class="play-button" type="button" data-open-game>
-              <span>Play Now</span>
-              <i aria-hidden="true"></i>
-            </button>
-          </div>
-        </section>
+    <!-- ============ GAME ============ -->
+    <main id="game" class="game" aria-label="Cleopatra's Gold slot machine">
+      <div class="game-bg" aria-hidden="true"></div>
+      <div class="game-vignette" aria-hidden="true"></div>
+      <div class="cleo-figure" aria-hidden="true"></div>
+      <div class="torch-glow torch-glow-left" aria-hidden="true"></div>
+      <div class="torch-glow torch-glow-right" aria-hidden="true"></div>
 
-        <section class="quick-grid" aria-label="Casino highlights">
-          <button class="promo-tile daily" type="button" data-nav="rewards">
-            <span>Daily Bonus</span>
-            <strong>Ready</strong>
-          </button>
-          <button class="promo-tile spins" type="button" data-open-game>
-            <span>Free Spins</span>
-            <strong id="freeSpinTile">0</strong>
-          </button>
-          <button class="promo-tile event" type="button" data-nav="tournaments">
-            <span>Live Event</span>
-            <strong>02:45</strong>
-          </button>
-        </section>
-
-        <section class="section-head">
-          <div>
-            <span>Featured</span>
-            <h2>Treasure Rooms</h2>
-          </div>
-          <button type="button" data-nav="games">View All</button>
-        </section>
-
-        <div class="game-carousel">
-          <button class="game-card royal is-hot" type="button" data-open-game>
-            <span class="game-badge">Hot</span>
-            <strong>Cleopatra Royale</strong>
-            <small>5 reels · jackpot</small>
-          </button>
-          <button class="game-card scarab" type="button" data-open-game>
-            <span class="game-badge">New</span>
-            <strong>Scarab Vault</strong>
-            <small>sticky wilds</small>
-          </button>
-          <button class="game-card giza" type="button" data-open-game>
-            <span class="game-badge">VIP</span>
-            <strong>Fortune of Giza</strong>
-            <small>mega prizes</small>
-          </button>
+      <!-- Top HUD -->
+      <header class="hud-top">
+        <div class="hud-chip balance-chip">
+          <span class="chip-coin" aria-hidden="true"></span>
+          <div><small>BALANCE</small><strong id="balanceValue">2,500</strong></div>
+          <button id="addCoinsButton" class="chip-add" type="button" aria-label="Add demo coins">+</button>
         </div>
+        <div class="hud-actions">
+          <button id="paytableButton" class="hud-round" type="button" aria-label="Paytable">i</button>
+          <button id="soundButton" class="hud-round" type="button" aria-label="Toggle sound">♪</button>
+          <button id="fullscreenButton" class="hud-round" type="button" aria-label="Fullscreen">⛶</button>
+        </div>
+      </header>
+
+      <!-- Slot machine -->
+      <section class="machine">
+        <div class="game-logo machine-logo">
+          <svg class="logo-wings" viewBox="0 0 300 60" aria-hidden="true">
+            <defs>
+              <linearGradient id="wingGold2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#fff3b8"/><stop offset=".45" stop-color="#f5b83d"/><stop offset="1" stop-color="#8f4d0d"/>
+              </linearGradient>
+            </defs>
+            <g fill="url(#wingGold2)">
+              <path d="M150 34 C120 6 66 2 8 26 C60 24 96 32 128 46 Z"/>
+              <path d="M150 34 C180 6 234 2 292 26 C240 24 204 32 172 46 Z"/>
+            </g>
+            <circle cx="150" cy="30" r="13" fill="#a41f3f" stroke="url(#wingGold2)" stroke-width="4"/>
+            <circle cx="146" cy="26" r="4" fill="#ff8ba7" opacity=".8"/>
+          </svg>
+          <h1><span>Cleopatra's</span><strong>GOLD</strong></h1>
+        </div>
+
+        <div class="jackpot-strip">
+          <i class="strip-gem" aria-hidden="true"></i>
+          <span id="stripLabel">GRAND JACKPOT</span>
+          <strong id="jackpotValue">12,840</strong>
+          <i class="strip-gem" aria-hidden="true"></i>
+        </div>
+
+        <div class="machine-frame">
+          <span class="pillar pillar-left" aria-hidden="true"></span>
+          <span class="pillar pillar-right" aria-hidden="true"></span>
+          <div class="reels-window">
+            <div class="reels" id="reels"></div>
+            <svg id="linesOverlay" class="lines-overlay" viewBox="0 0 500 300" preserveAspectRatio="none" aria-hidden="true"></svg>
+            <div id="freeSpinBadge" class="free-spin-badge is-hidden">FREE SPINS <strong id="freeSpinCount">0</strong></div>
+          </div>
+        </div>
+
+        <p class="status-line" id="statusMessage">PLACE YOUR BETS</p>
       </section>
 
-      <section class="screen" id="screen-games" data-screen="games">
-        <header class="compact-header">
-          <div>
-            <span>Games</span>
-            <h2>Egyptian Slots</h2>
-          </div>
-          <div class="mini-wallet"><span></span><strong id="gamesBalance">2,500</strong></div>
-        </header>
+      <!-- Bottom control bar -->
+      <footer class="controls">
+        <div class="controls-glass" aria-hidden="true"></div>
 
-        <section class="slot-stage" aria-label="Cleopatra Royale slot game">
-          <div class="stage-top">
-            <button class="back-link" type="button" data-nav="lobby">Lobby</button>
-            <div class="stage-title">
-              <span>Demo Slot</span>
-              <strong>Cleopatra Royale</strong>
-            </div>
-            <button class="sound-toggle" id="soundButton" type="button" aria-label="Toggle sound">Sound</button>
+        <div class="ctrl-group ctrl-bet" aria-label="Bet controls">
+          <button id="decreaseBet" class="bet-button" type="button" aria-label="Decrease bet">−</button>
+          <div class="ctrl-box">
+            <small>TOTAL BET</small>
+            <strong id="betValue">25</strong>
           </div>
-
-          <div class="jackpot-orb">
-            <span>Grand Jackpot</span>
-            <strong id="jackpotValue">12,840</strong>
-          </div>
-
-          <div class="reel-cabinet">
-            <div class="torch torch-left" aria-hidden="true"></div>
-            <div class="torch torch-right" aria-hidden="true"></div>
-            <div class="reel-grid" id="reelGrid" aria-live="polite"></div>
-          </div>
-
-          <div class="win-tray">
-            <div>
-              <span>Win</span>
-              <strong id="lastWin">0</strong>
-            </div>
-            <div>
-              <span>Multiplier</span>
-              <strong id="multiplier">x1</strong>
-            </div>
-            <div>
-              <span>Spins</span>
-              <strong id="sessionSpins">0</strong>
-            </div>
-          </div>
-
-          <div class="magic-meter" aria-label="Magic meter">
-            <span id="mirageMeter"></span>
-            <strong>Ancient Magic</strong>
-          </div>
-
-          <p class="game-status" id="statusMessage">The temple is open. Demo credits only.</p>
-
-          <div class="control-ring">
-            <button class="bet-step" id="decreaseBet" type="button" aria-label="Decrease bet">-</button>
-            <div class="bet-pedestal">
-              <span>Total Bet</span>
-              <strong id="betValue">25</strong>
-            </div>
-            <button class="bet-step" id="increaseBet" type="button" aria-label="Increase bet">+</button>
-            <button class="max-bet" id="maxBetButton" type="button">Max</button>
-            <button class="spin-control" id="spinButton" type="button">
-              <span>Spin</span>
-              <small>Hold for auto</small>
-            </button>
-            <button class="auto-spin" id="autoButton" type="button">Auto 10</button>
-          </div>
-        </section>
-      </section>
-
-      <section class="screen" id="screen-tournaments" data-screen="tournaments">
-        <header class="compact-header">
-          <div>
-            <span>Live</span>
-            <h2>Tournaments</h2>
-          </div>
-          <button class="glass-action" type="button" data-open-game>Join</button>
-        </header>
-        <div class="tournament-hero">
-          <span class="season-badge">Sandstorm Cup</span>
-          <strong>Top prize 1,000,000</strong>
-          <p>Climb the temple leaderboard with every demo spin.</p>
+          <button id="increaseBet" class="bet-button" type="button" aria-label="Increase bet">+</button>
         </div>
-        <div class="leaderboard">
-          <div><span>01</span><strong>Nefertari</strong><em>928,400</em></div>
-          <div><span>02</span><strong>Amun VIP</strong><em>801,020</em></div>
-          <div><span>03</span><strong>You</strong><em id="playerScore">0</em></div>
-        </div>
-      </section>
 
-      <section class="screen" id="screen-rewards" data-screen="rewards">
-        <header class="compact-header">
-          <div>
-            <span>Vault</span>
-            <h2>Rewards</h2>
-          </div>
-          <button class="glass-action" id="claimRewardButton" type="button">Claim</button>
-        </header>
-        <div class="reward-chest">
-          <div class="chest-glow" aria-hidden="true"></div>
-          <strong>Golden Chest</strong>
-          <span>+500 demo coins · 3 free spins</span>
+        <div class="ctrl-box win-box">
+          <small>WIN</small>
+          <strong id="winValue">0</strong>
         </div>
-        <div class="reward-list">
-          <div><span>Daily Bonus</span><strong>Ready</strong></div>
-          <div><span>VIP Ruby Gift</span><strong>Locked</strong></div>
-          <div><span>Free Spin Vault</span><strong id="rewardFreeSpins">0</strong></div>
-        </div>
-      </section>
 
-      <section class="screen" id="screen-profile" data-screen="profile">
-        <header class="compact-header">
-          <div>
-            <span>Profile</span>
-            <h2>Royal Player</h2>
-          </div>
-          <button class="glass-action" id="resetButton" type="button">Reset</button>
-        </header>
-        <div class="profile-card">
-          <div class="profile-medallion">CR</div>
-          <strong>VIP Level 15</strong>
-          <span>Temple prestige 80%</span>
-          <div class="vip-progress"><i></i></div>
+        <div class="magic-meter" title="Ancient Magic — full meter doubles the next spin">
+          <small>MAGIC</small>
+          <div class="meter-track"><i id="magicMeter"></i></div>
+          <em id="multiplierTag" class="is-hidden">x2</em>
         </div>
-        <div class="stats-grid">
-          <div><span>Balance</span><strong id="profileBalance">2,500</strong></div>
-          <div><span>Best Win</span><strong id="bestWin">0</strong></div>
-          <div><span>Free Spins</span><strong id="profileFreeSpins">0</strong></div>
-          <div><span>Session</span><strong id="profileSpins">0</strong></div>
-        </div>
-      </section>
 
-      <nav class="bottom-nav" aria-label="Casino navigation">
-        <button class="nav-item is-active" type="button" data-nav="lobby"><span>Home</span></button>
-        <button class="nav-item" type="button" data-nav="games"><span>Games</span></button>
-        <button class="nav-item" type="button" data-nav="tournaments"><span>Tourneys</span></button>
-        <button class="nav-item" type="button" data-nav="rewards"><span>Rewards</span></button>
-        <button class="nav-item" type="button" data-nav="profile"><span>Profile</span></button>
-      </nav>
+        <div class="ctrl-group ctrl-actions">
+          <button id="turboButton" class="pill-button" type="button">TURBO</button>
+          <button id="autoButton" class="pill-button" type="button">AUTO</button>
+        </div>
+
+        <button id="spinButton" class="spin-button" type="button" aria-label="Spin">
+          <span class="spin-ring" aria-hidden="true"></span>
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M24 7 a17 17 0 1 1 -15.1 9.2" fill="none" stroke="#5a2c05" stroke-width="6" stroke-linecap="round"/>
+            <path d="M6 5 v12 h12" fill="none" stroke="#5a2c05" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </footer>
     </main>
 
+    <!-- ============ WIN OVERLAY ============ -->
     <div id="winOverlay" class="win-overlay is-hidden" aria-live="polite" aria-atomic="true">
-      <div class="win-ring" aria-hidden="true"></div>
-      <div id="winTier" class="win-tier">WIN</div>
+      <div class="win-rays" aria-hidden="true"></div>
+      <div id="winTier" class="win-tier">BIG WIN</div>
       <div id="winAmount" class="win-amount">0</div>
-      <div id="winSubtitle" class="win-subtitle">Temple treasure unlocked</div>
     </div>
 
-    <div id="bonusModal" class="bonus-modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="bonusTitle">
-      <div class="bonus-dialog">
-        <span class="bonus-mark" aria-hidden="true">ANKH</span>
-        <h2 id="bonusTitle">Queen's Vault</h2>
-        <p id="bonusText">Choose three relics and reveal the treasure.</p>
+    <!-- ============ BONUS MODAL ============ -->
+    <div id="bonusModal" class="modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="bonusTitle">
+      <div class="modal-card bonus-card">
+        <h2 id="bonusTitle">QUEEN'S VAULT</h2>
+        <p id="bonusText">Pick 3 relics to reveal your treasure</p>
         <div id="bonusChoices" class="bonus-choices"></div>
-        <button id="collectBonusButton" class="play-button collect-button is-hidden" type="button">Collect</button>
+        <button id="collectBonusButton" class="gold-button is-hidden" type="button">COLLECT</button>
+      </div>
+    </div>
+
+    <!-- ============ PAYTABLE MODAL ============ -->
+    <div id="paytableModal" class="modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="paytableTitle">
+      <div class="modal-card paytable-card">
+        <h2 id="paytableTitle">PAYTABLE</h2>
+        <div id="paytableRows" class="paytable-rows"></div>
+        <p class="paytable-note">15 win lines · Eye of Horus is WILD · 3+ Ankh = Free Spins · 5× Cleopatra = GRAND JACKPOT</p>
+        <button id="closePaytableButton" class="gold-button" type="button">CLOSE</button>
       </div>
     </div>
 

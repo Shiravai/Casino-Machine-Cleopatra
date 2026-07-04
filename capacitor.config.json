@@ -1,0 +1,14 @@
+{
+  "appId": "com.shira.cleopatrasgold",
+  "appName": "Cleopatra's Gold",
+  "webDir": "www",
+  "backgroundColor": "#0b0603",
+  "android": {
+    "backgroundColor": "#0b0603"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}
