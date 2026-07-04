@@ -38,12 +38,20 @@
   /* ---------- backdrop ---------- */
   .backdrop {
     position: fixed;
-    inset: 0;
+    inset: -3%;
     z-index: -3;
     background:
       url("assets/egypt-casino-bg.png") center 30% / cover no-repeat;
     filter: saturate(1.08) brightness(0.62);
-    transform: scale(1.04);
+    animation: kenBurns 34s ease-in-out infinite alternate;
+  }
+  @keyframes kenBurns {
+    0%   { transform: scale(1.04) translate(0, 0); }
+    50%  { transform: scale(1.14) translate(-1.2%, -1.6%); }
+    100% { transform: scale(1.22) translate(1%, 0.6%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .backdrop { animation: none; transform: scale(1.04); }
   }
   .backdrop::after {
     content: "";
@@ -94,7 +102,11 @@
     aspect-ratio: 1 / 1;
     margin: 0 auto clamp(14px, 3vw, 22px);
     border-radius: 50%;
-    background: url("assets/cleopatra-mobile-hero.png") 50% 17% / 330% auto no-repeat;
+    background-image: url("assets/cleopatra-mobile-hero.png");
+    background-repeat: no-repeat;
+    background-position: 50% 17%;
+    background-size: 330% auto;
+    animation: portraitKenBurns 22s ease-in-out infinite alternate;
     border: 3px solid transparent;
     background-origin: border-box;
     box-shadow:
@@ -103,6 +115,13 @@
       0 14px 40px rgba(0, 0, 0, 0.65),
       0 0 60px rgba(255, 190, 80, 0.28);
     position: relative;
+  }
+  @keyframes portraitKenBurns {
+    0%   { background-size: 330% auto; background-position: 50% 17%; }
+    100% { background-size: 360% auto; background-position: 47% 14%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cleo-portrait { animation: none; }
   }
   .cleo-portrait::after {
     content: "";
