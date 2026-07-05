@@ -50,9 +50,6 @@
     50%  { transform: scale(1.14) translate(-1.2%, -1.6%); }
     100% { transform: scale(1.22) translate(1%, 0.6%); }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .backdrop { animation: none; transform: scale(1.04); }
-  }
   .backdrop::after {
     content: "";
     position: absolute;
@@ -95,43 +92,54 @@
   }
 
   /* ---------- layout ---------- */
+  .stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1100px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
   .wrap { max-width: 620px; width: 100%; text-align: center; position: relative; z-index: 1; }
 
   .cleo-portrait {
-    width: clamp(150px, 40vw, 210px);
-    aspect-ratio: 1 / 1;
-    margin: 0 auto clamp(14px, 3vw, 22px);
-    border-radius: 50%;
-    background-image: url("assets/cleopatra-mobile-hero.png");
-    background-repeat: no-repeat;
-    background-position: 50% 17%;
-    background-size: 330% auto;
+    width: clamp(160px, 60vw, 260px);
+    aspect-ratio: 3 / 4;
+    margin: 0 auto clamp(10px, 3vw, 18px);
+    border-radius: 18px;
+    background-image:
+      linear-gradient(180deg, transparent 60%, rgba(6,3,1,.9) 100%),
+      url("assets/cleopatra-mobile-hero.png");
+    background-repeat: no-repeat, no-repeat;
+    background-position: center, 50% 12%;
+    background-size: 100% 100%, 220% auto;
     animation: portraitKenBurns 22s ease-in-out infinite alternate;
-    border: 3px solid transparent;
-    background-origin: border-box;
+    border: 2px solid rgba(255, 214, 120, 0.55);
     box-shadow:
-      0 0 0 3px rgba(6, 3, 1, 0.9),
-      0 0 0 6px rgba(255, 214, 120, 0.55),
-      0 14px 40px rgba(0, 0, 0, 0.65),
-      0 0 60px rgba(255, 190, 80, 0.28);
+      0 0 0 3px rgba(6, 3, 1, 0.85),
+      0 18px 44px rgba(0, 0, 0, 0.65),
+      0 0 60px rgba(255, 190, 80, 0.24);
     position: relative;
   }
   @keyframes portraitKenBurns {
-    0%   { background-size: 330% auto; background-position: 50% 17%; }
-    100% { background-size: 360% auto; background-position: 47% 14%; }
+    0%   { background-size: 100% 100%, 220% auto; background-position: center, 50% 12%; }
+    100% { background-size: 100% 100%, 250% auto; background-position: center, 47% 9%; }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .cleo-portrait { animation: none; }
+
+  @media (min-width: 780px) {
+    .stage { flex-direction: row-reverse; align-items: center; gap: clamp(28px, 5vw, 64px); text-align: right; }
+    .cleo-portrait {
+      width: clamp(220px, 26vw, 320px);
+      aspect-ratio: 3 / 4.3;
+      margin: 0;
+      flex: none;
+    }
+    .wrap { text-align: right; }
+    .logo-wings { margin-inline: 0; }
+    h1, .tag { text-align: right; }
+    .tag::before, .tag::after { display: none; }
   }
-  .cleo-portrait::after {
-    content: "";
-    position: absolute;
-    inset: -6px;
-    border-radius: 50%;
-    border: 1px dashed rgba(255, 224, 150, 0.4);
-    animation: ringTurn 26s linear infinite;
-  }
-  @keyframes ringTurn { to { transform: rotate(360deg); } }
 
   .logo-wings { width: min(280px, 62vw); margin: 0 auto -0.6em; display: block; filter: drop-shadow(0 4px 10px rgba(0,0,0,.7)); }
 
@@ -295,51 +303,53 @@
   <div class="glow-orb gold" aria-hidden="true"></div>
   <div class="glow-orb teal" aria-hidden="true"></div>
 
-  <div class="wrap">
+  <div class="stage">
     <div class="cleo-portrait" role="img" aria-label="Cleopatra"></div>
 
-    <svg class="logo-wings" viewBox="0 0 300 60" aria-hidden="true">
-      <defs>
-        <linearGradient id="wg" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#fff3b8"/><stop offset=".45" stop-color="#f5b83d"/><stop offset="1" stop-color="#8f4d0d"/>
-        </linearGradient>
-      </defs>
-      <g fill="url(#wg)">
-        <path d="M150 34 C120 6 66 2 8 26 C60 24 96 32 128 46 Z"/>
-        <path d="M150 34 C180 6 234 2 292 26 C240 24 204 32 172 46 Z"/>
-      </g>
-      <circle cx="150" cy="30" r="13" fill="#a41f3f" stroke="url(#wg)" stroke-width="4"/>
-      <circle cx="146" cy="26" r="4" fill="#ff8ba7" opacity=".8"/>
-    </svg>
-    <h1>Cleopatra's<span class="line2">Gold</span></h1>
-    <div class="tag">משחק קזינו מצרי · קרדיטים לדוגמה בלבד</div>
+    <div class="wrap">
+      <svg class="logo-wings" viewBox="0 0 300 60" aria-hidden="true">
+        <defs>
+          <linearGradient id="wg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#fff3b8"/><stop offset=".45" stop-color="#f5b83d"/><stop offset="1" stop-color="#8f4d0d"/>
+          </linearGradient>
+        </defs>
+        <g fill="url(#wg)">
+          <path d="M150 34 C120 6 66 2 8 26 C60 24 96 32 128 46 Z"/>
+          <path d="M150 34 C180 6 234 2 292 26 C240 24 204 32 172 46 Z"/>
+        </g>
+        <circle cx="150" cy="30" r="13" fill="#a41f3f" stroke="url(#wg)" stroke-width="4"/>
+        <circle cx="146" cy="26" r="4" fill="#ff8ba7" opacity=".8"/>
+      </svg>
+      <h1>Cleopatra's<span class="line2">Gold</span></h1>
+      <div class="tag">משחק קזינו מצרי · קרדיטים לדוגמה בלבד</div>
 
-    <div class="card">
-      <span class="badge royal">מומלץ · אנדרואיד</span>
-      <h2>התקנה כאפליקציה</h2>
-      <p>הורדה והתקנה ישירה על הטלפון. עובד גם בלי אינטרנט אחרי ההתקנה.</p>
-      <a class="btn" id="apkLink" href="CleopatrasGold.apk" download>⬇ הורידו את ה-APK</a>
-      <ol>
-        <li>לחצו על הכפתור למעלה — הקובץ יורד</li>
-        <li>פתחו את הקובץ שהורד ← <b>התקן</b></li>
-        <li>אם מוצג אזהרה על "מקור לא מוכר" — אשרו התקנה (זה תקין, האפליקציה לא מגיעה מחנות אבל בטוחה לחלוטין)</li>
-        <li>פתחו מהאייקון החדש במסך הבית</li>
-      </ol>
+      <div class="card">
+        <span class="badge royal">מומלץ · אנדרואיד</span>
+        <h2>התקנה כאפליקציה</h2>
+        <p>הורדה והתקנה ישירה על הטלפון. עובד גם בלי אינטרנט אחרי ההתקנה.</p>
+        <a class="btn" id="apkLink" href="CleopatrasGold.apk" download>⬇ הורידו את ה-APK</a>
+        <ol>
+          <li>לחצו על הכפתור למעלה — הקובץ יורד</li>
+          <li>פתחו את הקובץ שהורד ← <b>התקן</b></li>
+          <li>אם מוצג אזהרה על "מקור לא מוכר" — אשרו התקנה (זה תקין, האפליקציה לא מגיעה מחנות אבל בטוחה לחלוטין)</li>
+          <li>פתחו מהאייקון החדש במסך הבית</li>
+        </ol>
+      </div>
+
+      <div class="card">
+        <span class="badge">אייפון · כל מכשיר</span>
+        <h2>שחקו ישר בדפדפן</h2>
+        <p>בלי הורדה — עובד בכל טלפון, כולל אייפון.</p>
+        <a class="btn secondary" href="index.html">▶ פתחו את המשחק</a>
+        <ol>
+          <li>פתחו קישור זה ב־<b>Safari</b> (אייפון) או בכרום (אנדרואיד)</li>
+          <li>כפתור שיתוף / תפריט ⋮ ← <b>"הוסף למסך הבית"</b></li>
+          <li>נפתח במסך מלא, לרוחב, כמו אפליקציה אמיתית</li>
+        </ol>
+      </div>
+
+      <div class="note">גרסת בדיקות (Demo) · קרדיטים וירטואליים בלבד · אין רכישות אמיתיות</div>
     </div>
-
-    <div class="card">
-      <span class="badge">אייפון · כל מכשיר</span>
-      <h2>שחקו ישר בדפדפן</h2>
-      <p>בלי הורדה — עובד בכל טלפון, כולל אייפון.</p>
-      <a class="btn secondary" href="index.html">▶ פתחו את המשחק</a>
-      <ol>
-        <li>פתחו קישור זה ב־<b>Safari</b> (אייפון) או בכרום (אנדרואיד)</li>
-        <li>כפתור שיתוף / תפריט ⋮ ← <b>"הוסף למסך הבית"</b></li>
-        <li>נפתח במסך מלא, לרוחב, כמו אפליקציה אמיתית</li>
-      </ol>
-    </div>
-
-    <div class="note">גרסת בדיקות (Demo) · קרדיטים וירטואליים בלבד · אין רכישות אמיתיות</div>
   </div>
 
   <script>
